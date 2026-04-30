@@ -4,19 +4,21 @@ import type { Product } from '../types';
 const CATEGORY_LABEL: Record<Product['category'], string> = {
   camera: 'CAMERA',
   lens: 'LENS',
-  audio: 'AUDIO',
-  filter: 'FILTER',
-  support: 'SUPPORT',
+  action: 'ACTION CAM',
   gimbal: 'GIMBAL',
+  support: 'SUPPORT',
+  filter: 'FILTER',
+  audio: 'AUDIO',
 };
 
 const CATEGORY_GLYPH: Record<Product['category'], string> = {
   camera: '◉',
   lens: '◎',
-  audio: '🎙',
-  filter: '◐',
-  support: '⌶',
+  action: '◎',
   gimbal: '⟳',
+  support: '⌶',
+  filter: '◐',
+  audio: '🎙',
 };
 
 // Try the configured path. If the load fails (file missing, decode error),

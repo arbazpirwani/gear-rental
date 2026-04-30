@@ -2,26 +2,34 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { useProducts } from '../lib/db/products';
-import type { Category } from '../types';
+import { CATEGORY_ORDER, type Category } from '../types';
 
 const FILTERS: Array<{ key: 'all' | Category; label: string }> = [
   { key: 'all', label: 'All' },
   { key: 'camera', label: 'Cameras' },
   { key: 'lens', label: 'Lenses' },
-  { key: 'audio', label: 'Audio' },
-  { key: 'filter', label: 'Filters' },
-  { key: 'support', label: 'Support' },
+  { key: 'action', label: 'Action' },
   { key: 'gimbal', label: 'Gimbals' },
+  { key: 'support', label: 'Tripods' },
+  { key: 'filter', label: 'Filters' },
+  { key: 'audio', label: 'Audio' },
 ];
 
 export default function HomePage() {
   const [filter, setFilter] = useState<'all' | Category>('all');
   const { products, source } = useProducts();
 
-  const visible = useMemo(
-    () => (filter === 'all' ? products : products.filter((p) => p.category === filter)),
-    [filter, products],
-  );
+  const visible = useMemo(() => {
+    const list = filter === 'all' ? products : products.filter((p) => p.category === filter);
+    return [...list].sort((a, b) => {
+      const ai = CATEGORY_ORDER.indexOf(a.category);
+      const bi = CATEGORY_ORDER.indexOf(b.category);
+      const da = ai === -1 ? CATEGORY_ORDER.length : ai;
+      const db = bi === -1 ? CATEGORY_ORDER.length : bi;
+      if (da !== db) return da - db;
+      return a.title.localeCompare(b.title);
+    });
+  }, [filter, products]);
 
   return (
     <>

@@ -1,4 +1,15 @@
-export type Category = 'camera' | 'lens' | 'audio' | 'filter' | 'support' | 'gimbal';
+export type Category = 'camera' | 'lens' | 'action' | 'gimbal' | 'support' | 'filter' | 'audio';
+
+// Display order. Categories not listed here go last.
+export const CATEGORY_ORDER: Category[] = [
+  'camera',
+  'lens',
+  'action',
+  'gimbal',
+  'support',
+  'filter',
+  'audio',
+];
 
 export interface Product {
   id: string;

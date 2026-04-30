@@ -99,13 +99,13 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'sony-55-210',
-    title: 'Sony 55-210mm f/4.5-6.3 OSS',
+    title: 'Sony 55-210mm f/4.5-6.3 OSS (silver)',
     brand: 'Sony',
     category: 'lens',
-    shortDescription: 'Lightweight telephoto zoom for events and travel.',
+    shortDescription: 'Lightweight silver telephoto zoom for events and travel.',
     description:
-      'Compact telephoto zoom giving an 82-315 mm equivalent reach on APS-C. Optical SteadyShot, internal AF and a circular aperture for soft backgrounds. Good for sports, events, wildlife and tight portrait crops.',
-    highlights: ['55-210 mm zoom (82-315 equiv.)', 'Optical SteadyShot', 'Internal-focus AF', 'Compact, ~345 g'],
+      'Compact telephoto zoom in a silver finish, giving an 82-315 mm equivalent reach on APS-C. Optical SteadyShot, internal AF and a circular aperture for soft backgrounds. Good for sports, events, wildlife and tight portrait crops.',
+    highlights: ['55-210 mm zoom (82-315 equiv.)', 'Silver finish', 'Optical SteadyShot', 'Internal-focus AF', 'Compact, ~345 g'],
     pricePerDay: 40,
     deposit: 600,
     image: '/images/sony-55-210.jpg',
@@ -185,7 +185,7 @@ export const PRODUCTS: Product[] = [
     id: 'dji-action-5',
     title: 'DJI Osmo Action 5 Pro',
     brand: 'DJI',
-    category: 'camera',
+    category: 'action',
     shortDescription: 'Tough 4K action cam — water, sand, action.',
     description:
       'DJI\'s flagship action camera with dual touchscreens, 4K/120 fps recording, 1/1.3" sensor and waterproof design. Perfect for desert drives, beach days, dirt-bike POV and any shoot where you do not want to risk a mirrorless body.',
