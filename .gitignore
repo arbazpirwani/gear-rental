@@ -14,3 +14,4 @@ vite.config.d.ts
 .preview-*.png
 .live-*.png
 scripts/fetch-images.report.json
+.playwright-mcp/
