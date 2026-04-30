@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import {
   collection,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
-  updateDoc,
+  where,
   writeBatch,
 } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -108,10 +109,28 @@ export function useBookings(): { bookings: BookingDoc[]; loading: boolean } {
   return { bookings, loading };
 }
 
+// Updating a booking's status also has to keep the public `bookedDates`
+// docs in sync, otherwise the calendar lies after admin actions:
+//   pending → confirmed: flip the date-block label so customers see "confirmed"
+//   anything → cancelled: delete the date-blocks so the dates are freed
+//   confirmed → returned/picked_up: leave the block as-is (the dates were used)
 export async function updateBookingStatus(
   id: string,
   status: BookingStatus,
 ): Promise<void> {
   if (!db) throw new Error('Firebase not configured.');
-  await updateDoc(doc(db, 'bookings', id), { status });
+  const batch = writeBatch(db);
+  batch.update(doc(db, 'bookings', id), { status });
+
+  const blockSnap = await getDocs(
+    query(collection(db, 'bookedDates'), where('bookingId', '==', id)),
+  );
+  for (const blockDoc of blockSnap.docs) {
+    if (status === 'cancelled') {
+      batch.delete(blockDoc.ref);
+    } else if (status === 'confirmed') {
+      batch.update(blockDoc.ref, { status: 'confirmed' });
+    }
+  }
+  await batch.commit();
 }

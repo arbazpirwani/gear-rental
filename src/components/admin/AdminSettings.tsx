@@ -1,21 +1,41 @@
 import { useState } from 'react';
-import { seedProducts } from '../../lib/db/products';
+import { addMissingProducts, resetProductsToSeed } from '../../lib/db/products';
 
 export default function AdminSettings() {
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<'add' | 'reset' | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
 
-  async function runSeed() {
-    if (!confirm('Seed default products into Firestore? This will overwrite docs with the same IDs.')) return;
-    setBusy(true);
+  async function runAddMissing() {
+    setBusy('add');
     setMsg(null);
     try {
-      const n = await seedProducts();
-      setMsg(`Seeded ${n} products. Switch to the Products tab to verify.`);
+      const { added, skipped } = await addMissingProducts();
+      setMsg(
+        added === 0
+          ? `Nothing to add — all ${skipped} seed products already exist in Firestore.`
+          : `Added ${added} new product(s). Skipped ${skipped} that were already there. Switch to Products to verify.`,
+      );
     } catch (err) {
-      setMsg('Seed failed: ' + (err instanceof Error ? err.message : 'unknown'));
+      setMsg('Add failed: ' + (err instanceof Error ? err.message : 'unknown'));
     }
-    setBusy(false);
+    setBusy(null);
+  }
+
+  async function runReset() {
+    if (!confirm(
+      'DESTRUCTIVE. This will overwrite every seed-id product in Firestore with the seed-file values, ' +
+      'discarding any prices/titles/descriptions you have edited in /admin. Continue?',
+    )) return;
+    if (!confirm('Are you absolutely sure? Type cancel in your head if not.')) return;
+    setBusy('reset');
+    setMsg(null);
+    try {
+      const n = await resetProductsToSeed();
+      setMsg(`Reset ${n} products to the seed defaults.`);
+    } catch (err) {
+      setMsg('Reset failed: ' + (err instanceof Error ? err.message : 'unknown'));
+    }
+    setBusy(null);
   }
 
   return (
@@ -23,25 +43,41 @@ export default function AdminSettings() {
       <h2>Settings</h2>
 
       <section className="setting-card">
-        <h3>Seed default products</h3>
+        <h3>Add missing products</h3>
         <p className="muted">
-          One-time setup: writes the 14 products from the seed list into the <code>products</code>
-          {' '}collection. Run this immediately after creating the Firestore database.
+          Safe to run any time. Only creates Firestore docs for seed products that
+          don't exist yet — your edited prices and descriptions are preserved.
+          Run this after pulling new products into <code>src/data/products.ts</code>.
         </p>
-        <button className="btn btn-primary" disabled={busy} onClick={runSeed}>
-          {busy ? 'Seeding…' : 'Seed defaults'}
+        <button className="btn btn-primary" disabled={busy !== null} onClick={runAddMissing}>
+          {busy === 'add' ? 'Adding…' : 'Add missing products'}
         </button>
-        {msg && <div className="quote-line" style={{ marginTop: 12 }}>{msg}</div>}
       </section>
+
+      <section className="setting-card">
+        <h3>Reset all products to seed defaults</h3>
+        <p className="muted">
+          <strong>Destructive.</strong> Overwrites every seed-id product in Firestore
+          with the values from <code>src/data/products.ts</code>. Use only when you
+          want a factory reset. Two confirmations required.
+        </p>
+        <button className="btn btn-ghost" disabled={busy !== null} onClick={runReset}>
+          {busy === 'reset' ? 'Resetting…' : 'Reset all to defaults'}
+        </button>
+      </section>
+
+      {msg && <div className="quote-line" style={{ marginTop: 12 }}>{msg}</div>}
 
       <section className="setting-card">
         <h3>Calendar policy</h3>
         <p className="muted">
-          When a customer submits a booking, a <code>bookedDates</code> entry is created with
-          status <strong>pending</strong>. The catalog shows pending dates as already-blocked
-          to prevent overlapping requests. To free a date, change the booking status to{' '}
-          <strong>cancelled</strong> and the related block can be removed manually from the
-          Firestore console.
+          When a customer submits a booking, a <code>bookedDates</code> entry is
+          created with status <strong>pending</strong>. The catalog shows pending
+          dates as already-blocked to prevent overlapping requests. When you
+          mark a booking as <strong>confirmed</strong>, the block flips to
+          confirmed automatically. When you mark a booking as{' '}
+          <strong>cancelled</strong>, the matching blocks are deleted and the
+          dates become available again.
         </p>
       </section>
     </div>

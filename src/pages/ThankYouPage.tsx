@@ -27,6 +27,7 @@ export default function ThankYouPage() {
           <a className="btn btn-primary" href={`https://wa.me/${OWNER_WHATSAPP}`} target="_blank" rel="noreferrer">
             Open WhatsApp ({OWNER_DISPLAY_PHONE})
           </a>
+          <a className="btn btn-ghost" href={`tel:+${OWNER_WHATSAPP}`}>Call</a>
           <Link to="/" className="btn btn-ghost">Back to catalog</Link>
         </div>
       </div>

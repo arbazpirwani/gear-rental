@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   collection,
   doc,
+  getDocs,
   onSnapshot,
   query,
   setDoc,
@@ -85,7 +86,32 @@ export function useProduct(id: string | undefined): {
   return { product, source };
 }
 
-export async function seedProducts(): Promise<number> {
+// Add only products that don't already exist in Firestore. Safe to run after
+// you've edited prices in /admin — your edits are preserved.
+export async function addMissingProducts(): Promise<{ added: number; skipped: number }> {
+  if (!db) throw new Error('Firebase not configured.');
+  const existing = await getDocs(query(collection(db, 'products')));
+  const existingIds = new Set(existing.docs.map((d) => d.id));
+
+  const batch = writeBatch(db);
+  let added = 0;
+  let skipped = 0;
+  for (const p of SEED_PRODUCTS) {
+    if (existingIds.has(p.id)) {
+      skipped++;
+      continue;
+    }
+    batch.set(doc(db, 'products', p.id), productToFirestore(p));
+    added++;
+  }
+  if (added > 0) await batch.commit();
+  return { added, skipped };
+}
+
+// Destructive: overwrites every seed-id doc with the seed-file contents.
+// Use only when you actually want a factory reset — admin edits to prices,
+// titles, etc. on those products will be lost.
+export async function resetProductsToSeed(): Promise<number> {
   if (!db) throw new Error('Firebase not configured.');
   const batch = writeBatch(db);
   for (const p of SEED_PRODUCTS) {

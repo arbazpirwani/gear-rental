@@ -35,8 +35,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             Pickup &amp; drop-off by appointment.
           </div>
           <div className="footer-contact">
+            <a href={`tel:+${OWNER_WHATSAPP}`}>Call {OWNER_DISPLAY_PHONE}</a>
             <a href={`https://wa.me/${OWNER_WHATSAPP}`} target="_blank" rel="noreferrer">
-              WhatsApp {OWNER_DISPLAY_PHONE}
+              WhatsApp
             </a>
             <Link to="/admin" className="footer-admin">Admin</Link>
           </div>

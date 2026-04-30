@@ -19,14 +19,16 @@ const CATEGORY_GLYPH: Record<Product['category'], string> = {
   gimbal: '⟳',
 };
 
-export default function ProductImage({ product, large = false }: { product: Product; large?: boolean }) {
+// Try the configured path. If the load fails (file missing, decode error),
+// try swapping .jpg ↔ .svg once. If both fail, show a category placeholder.
+// Keyed on `product.image` so a different product resets the chain.
+function ImageWithFallback({ product, src, large }: { product: Product; src: string; large: boolean }) {
   const [errored, setErrored] = useState(false);
-  // Vite serves /public at base URL. Build the absolute URL the browser resolves.
-  const src = product.image.startsWith('http')
-    ? product.image
-    : `${import.meta.env.BASE_URL.replace(/\/$/, '')}${product.image}`;
+  const [usedFallback, setUsedFallback] = useState(false);
+  const fallback = swapExtension(src);
+  const finalSrc = errored && !usedFallback && fallback ? fallback : src;
 
-  if (errored) {
+  if (errored && (usedFallback || !fallback)) {
     return (
       <div className={`placeholder ${large ? 'placeholder-lg' : ''}`}>
         <div className="placeholder-glyph">{CATEGORY_GLYPH[product.category]}</div>
@@ -35,13 +37,46 @@ export default function ProductImage({ product, large = false }: { product: Prod
       </div>
     );
   }
+
   return (
     <img
-      src={src}
+      src={finalSrc}
       alt={product.title}
-      loading="lazy"
       className={large ? 'product-image-lg' : 'product-image'}
-      onError={() => setErrored(true)}
+      onError={() => {
+        if (!errored) {
+          setErrored(true);
+        } else {
+          setUsedFallback(true);
+        }
+      }}
     />
   );
+}
+
+export default function ProductImage({ product, large = false }: { product: Product; large?: boolean }) {
+  const src = resolveSrc(product.image);
+  if (!src) {
+    return (
+      <div className={`placeholder ${large ? 'placeholder-lg' : ''}`}>
+        <div className="placeholder-glyph">{CATEGORY_GLYPH[product.category]}</div>
+        <div className="placeholder-cat">{CATEGORY_LABEL[product.category]}</div>
+        <div className="placeholder-title">{product.brand}</div>
+      </div>
+    );
+  }
+  return <ImageWithFallback key={src} product={product} src={src} large={large} />;
+}
+
+function resolveSrc(rawPath: string): string {
+  if (!rawPath) return '';
+  if (rawPath.startsWith('http')) return rawPath;
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  return `${base}${rawPath}`;
+}
+
+function swapExtension(src: string): string | null {
+  if (src.endsWith('.jpg')) return src.replace(/\.jpg$/, '.svg');
+  if (src.endsWith('.svg')) return src.replace(/\.svg$/, '.jpg');
+  return null;
 }

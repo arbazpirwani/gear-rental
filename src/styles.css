@@ -845,6 +845,97 @@ textarea:focus {
   margin: 0 0 20px;
 }
 
+/* MODAL */
+.modal {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0;
+  background: transparent;
+  max-width: min(720px, calc(100vw - 24px));
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.modal::backdrop {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.modal-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 17px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--text-muted);
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.legal-modal h1 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+.legal-modal h2 {
+  font-size: 15px;
+  margin-top: 18px;
+}
+
+.legal-modal .lead {
+  font-size: 14px;
+}
+
+.legal-modal ul {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.link-inline {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent-hover);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-inline:hover {
+  color: var(--accent);
+}
+
 /* AVAILABILITY */
 .availability {
   background: var(--surface);

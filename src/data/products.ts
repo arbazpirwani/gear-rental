@@ -19,7 +19,7 @@ export const PRODUCTS: Product[] = [
     ],
     pricePerDay: 80,
     deposit: 1500,
-    image: '/images/sony-zv-e10.svg',
+    image: '/images/sony-zv-e10.jpg',
     inStock: true,
   },
   {
@@ -38,7 +38,7 @@ export const PRODUCTS: Product[] = [
     ],
     pricePerDay: 100,
     deposit: 2000,
-    image: '/images/sony-a6500.svg',
+    image: '/images/sony-a6500.jpg',
     inStock: true,
   },
   {
@@ -52,7 +52,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['16-50 mm zoom range (24-75 equiv.)', 'Optical SteadyShot stabilisation', 'Retractable, only 116 g', 'Power-zoom rocker'],
     pricePerDay: 30,
     deposit: 500,
-    image: '/images/sony-16-50.svg',
+    image: '/images/sony-16-50.jpg',
     inStock: true,
   },
   {
@@ -66,7 +66,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['Bright f/1.8 maximum aperture', 'Optical SteadyShot', 'Internal-focus, near-silent AF', '52 mm equivalent field of view'],
     pricePerDay: 60,
     deposit: 1000,
-    image: '/images/sony-35-1.8.svg',
+    image: '/images/sony-35-1.8.jpg',
     inStock: true,
   },
   {
@@ -80,7 +80,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['Constant f/4 across 18-105 mm', 'Internal zoom + power zoom', 'G-series optics, OSS', '27-157 mm equivalent range'],
     pricePerDay: 80,
     deposit: 1500,
-    image: '/images/sony-18-105.svg',
+    image: '/images/sony-18-105.jpg',
     inStock: true,
   },
   {
@@ -94,7 +94,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['f/1.8 maximum aperture', 'Autofocus, E-mount', '75 mm equivalent on APS-C', 'Lightweight portrait prime'],
     pricePerDay: 25,
     deposit: 250,
-    image: '/images/yongnuo-yn50.svg',
+    image: '/images/yongnuo-yn50.jpg',
     inStock: true,
   },
   {
@@ -108,7 +108,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['55-210 mm zoom (82-315 equiv.)', 'Optical SteadyShot', 'Internal-focus AF', 'Compact, ~345 g'],
     pricePerDay: 40,
     deposit: 600,
-    image: '/images/sony-55-210.svg',
+    image: '/images/sony-55-210.jpg',
     inStock: true,
   },
   {
@@ -122,7 +122,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['60-600 mm range, OS optical stabiliser', 'HLA linear AF motor', 'Dust- & splash-proof barrel', 'Tripod collar with Arca-Swiss foot'],
     pricePerDay: 250,
     deposit: 4500,
-    image: '/images/sigma-60-600.svg',
+    image: '/images/sigma-60-600.jpg',
     inStock: true,
   },
   {
@@ -136,7 +136,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['Omnidirectional condenser capsule', 'TRRS jack for phones', 'Foam windshield + clip', 'Kevlar-reinforced cable'],
     pricePerDay: 30,
     deposit: 200,
-    image: '/images/rode-smartlav.svg',
+    image: '/images/rode-smartlav.jpg',
     inStock: true,
   },
   {
@@ -150,7 +150,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['3-stop neutral density', '49 mm screw-in thread', 'Optical glass, neutral colour cast', 'Comes in protective case'],
     pricePerDay: 15,
     deposit: 150,
-    image: '/images/tiffen-nd09-49.svg',
+    image: '/images/tiffen-nd09-49.jpg',
     inStock: true,
   },
   {
@@ -164,7 +164,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['3-stop neutral density', '72 mm screw-in thread', 'Optical glass', 'Comes in protective case'],
     pricePerDay: 20,
     deposit: 200,
-    image: '/images/tiffen-nd09-72.svg',
+    image: '/images/tiffen-nd09-72.jpg',
     inStock: true,
   },
   {
@@ -178,7 +178,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['Aluminium legs, foldable to ~50 cm', 'Reversible centre column for low angles', '3-way pan/tilt head', 'Carry bag included'],
     pricePerDay: 30,
     deposit: 300,
-    image: '/images/natgeo-tripod.svg',
+    image: '/images/natgeo-tripod.jpg',
     inStock: true,
   },
   {
@@ -192,7 +192,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['4K up to 120 fps', '1/1.3" sensor, 13.5 stops DR', 'Waterproof to 20 m without case', 'Dual touchscreens'],
     pricePerDay: 100,
     deposit: 1500,
-    image: '/images/dji-action-5.svg',
+    image: '/images/dji-action-5.jpg',
     inStock: true,
   },
   {
@@ -206,7 +206,7 @@ export const PRODUCTS: Product[] = [
     highlights: ['3-axis stabilisation', 'Built-in extension rod', 'ActiveTrack 5.0 subject tracking', 'Foldable, ~309 g'],
     pricePerDay: 50,
     deposit: 500,
-    image: '/images/dji-osmo-mobile-6.svg',
+    image: '/images/dji-osmo-mobile-6.jpg',
     inStock: true,
   },
 ];

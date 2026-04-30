@@ -7,6 +7,8 @@ import { buildBookingMessage, whatsappLink } from '../lib/whatsapp';
 import { clearCart } from '../lib/storage';
 import { isFirebaseConfigured } from '../lib/firebase';
 import { createBooking } from '../lib/db/bookings';
+import Modal from '../components/Modal';
+import AgreementContent from '../components/AgreementContent';
 import type { CustomerInfo } from '../types';
 
 export default function CheckoutPage() {
@@ -22,6 +24,7 @@ export default function CheckoutPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [agreementOpen, setAgreementOpen] = useState(false);
 
   const lookup = useMemo(
     () => (id: string) => products.find((p) => p.id === id),
@@ -137,8 +140,17 @@ export default function CheckoutPage() {
               />
               <span>
                 I have read and agree to the{' '}
-                <Link to="/agreement" target="_blank" rel="noreferrer">Rental Agreement</Link>.
-                I will present my Emirates ID at pickup, accept liability for damage and loss as
+                <button
+                  type="button"
+                  className="link-inline"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setAgreementOpen(true);
+                  }}
+                >
+                  Rental Agreement
+                </button>
+                . I will present my Emirates ID at pickup, accept liability for damage and loss as
                 described, and authorise deductions from the refundable deposit accordingly.
               </span>
             </label>
@@ -193,6 +205,35 @@ export default function CheckoutPage() {
           </div>
         </aside>
       </div>
+
+      <Modal
+        open={agreementOpen}
+        onClose={() => setAgreementOpen(false)}
+        title="Rental Agreement"
+      >
+        <div className="legal legal-modal">
+          <AgreementContent />
+          <div className="actions" style={{ marginTop: 16 }}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => {
+                set('agreed', true);
+                setAgreementOpen(false);
+              }}
+            >
+              I agree
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => setAgreementOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
