@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="SONY 16-50 OSS">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#3a4358"/>
+      <stop offset="100%" stop-color="#1f2737"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="360" fill="url(#bg)"/>
+  <text x="40" y="46" font-family="-apple-system,system-ui,sans-serif" font-size="11" letter-spacing="2" fill="#94a3b8" font-weight="700">SONY · KIT ZOOM</text>
+  
+    <g transform="translate(60 120)">
+      <!-- lens hood ring -->
+      <rect x="0" y="40" width="20" height="80" rx="3" fill="#1f2737"/>
+      <!-- main barrel -->
+      <rect x="20" y="30" width="270" height="100" rx="6" fill="url(#body)"/>
+      <!-- focus ring textured -->
+      <rect x="60" y="30" width="60" height="100" fill="#0f172a"/>
+      <g stroke="#3a4358" stroke-width="0.8">
+        <line x1="65" y1="35" x2="65" y2="125"/><line x1="69" y1="35" x2="69" y2="125"/><line x1="73" y1="35" x2="73" y2="125"/><line x1="77" y1="35" x2="77" y2="125"/><line x1="81" y1="35" x2="81" y2="125"/><line x1="85" y1="35" x2="85" y2="125"/><line x1="89" y1="35" x2="89" y2="125"/><line x1="93" y1="35" x2="93" y2="125"/><line x1="97" y1="35" x2="97" y2="125"/><line x1="101" y1="35" x2="101" y2="125"/><line x1="105" y1="35" x2="105" y2="125"/><line x1="109" y1="35" x2="109" y2="125"/><line x1="113" y1="35" x2="113" y2="125"/><line x1="117" y1="35" x2="117" y2="125"/>
+      </g>
+      <!-- zoom ring -->
+      <rect x="170" y="30" width="60" height="100" fill="#0a0e18"/>
+      <g stroke="#3a4358" stroke-width="0.8">
+        <line x1="175" y1="35" x2="175" y2="125"/><line x1="179" y1="35" x2="179" y2="125"/><line x1="183" y1="35" x2="183" y2="125"/><line x1="187" y1="35" x2="187" y2="125"/><line x1="191" y1="35" x2="191" y2="125"/><line x1="195" y1="35" x2="195" y2="125"/><line x1="199" y1="35" x2="199" y2="125"/><line x1="203" y1="35" x2="203" y2="125"/><line x1="207" y1="35" x2="207" y2="125"/><line x1="211" y1="35" x2="211" y2="125"/><line x1="215" y1="35" x2="215" y2="125"/><line x1="219" y1="35" x2="219" y2="125"/><line x1="223" y1="35" x2="223" y2="125"/><line x1="227" y1="35" x2="227" y2="125"/>
+      </g>
+      <!-- mount ring -->
+      <rect x="290" y="40" width="22" height="80" rx="3" fill="#1f2737"/>
+      <!-- front element glass -->
+      <circle cx="10" cy="80" r="34" fill="#0a0e18" stroke="#3a4358" stroke-width="2"/>
+      <circle cx="10" cy="80" r="26" fill="#0b1020"/>
+      <circle cx="10" cy="80" r="18" fill="#000"/>
+      <circle cx="6" cy="74" r="6" fill="#1e293b" opacity="0.6"/>
+      <!-- gold band -->
+      <rect x="240" y="30" width="3" height="100" fill="#f59e0b"/>
+      <!-- labels -->
+      <text x="20" y="-8" font-family="-apple-system,system-ui,sans-serif" font-size="11" font-weight="800" fill="#f59e0b" letter-spacing="2">SONY</text>
+      <text x="312" y="-8" text-anchor="end" font-family="-apple-system,system-ui,sans-serif" font-size="9" fill="#94a3b8" letter-spacing="1">16-50 OSS</text>
+    </g>
+  <text x="240" y="328" text-anchor="middle" font-family="-apple-system,system-ui,sans-serif" font-size="13" fill="#cbd5e1" font-weight="600">SONY 16-50 OSS</text>
+</svg>

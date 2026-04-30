@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin allowlist — keep this in sync with VITE_ADMIN_EMAILS in your env.
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email.lower() in [
+          'ext_arbaz.hanif@astratech.ae'
+        ];
+    }
+
+    // Public read of products, admin writes only.
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Public read of bookedDates so the calendar shows blocks.
+    // Public create allowed only with valid shape — anyone could spam dummy
+    // blocks, so admin should periodically prune any obviously bogus entries.
+    // Updates and deletes are admin-only.
+    match /bookedDates/{blockId} {
+      allow read: if true;
+      allow create: if isValidBlock(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+
+    function isValidBlock(d) {
+      return d.keys().hasOnly(['productId', 'startDate', 'endDate', 'bookingId', 'status', 'createdAt'])
+        && d.productId is string
+        && d.startDate is string
+        && d.endDate is string
+        && d.bookingId is string
+        && d.status in ['pending', 'confirmed']
+        && d.startDate <= d.endDate;
+    }
+
+    // Bookings hold customer PII — admin-only read, public create with validation.
+    match /bookings/{bookingId} {
+      allow read: if isAdmin();
+      allow create: if isValidBooking(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+
+    function isValidBooking(d) {
+      return d.keys().hasAll(['customer', 'items', 'quote', 'status', 'createdAt'])
+        && d.customer.fullName is string && d.customer.fullName.size() > 0
+        && d.customer.phone is string && d.customer.phone.size() > 0
+        && d.customer.email is string && d.customer.email.size() > 0
+        && d.customer.agreed == true
+        && d.items is list && d.items.size() > 0 && d.items.size() <= 30
+        && d.status == 'pending'
+        && d.quote.rentalTotal is number
+        && d.quote.depositTotal is number;
+    }
+  }
+}
