@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <div>
             <strong>Gear Rental</strong> · Reem Island, Abu Dhabi
             <br />
-            Pickup &amp; drop-off by appointment.
+            Camera, lens, gimbal &amp; action-cam rental — pickup by appointment.
           </div>
           <div className="footer-contact">
             <a href={`tel:+${OWNER_WHATSAPP}`}>Call {OWNER_DISPLAY_PHONE}</a>
@@ -42,6 +42,14 @@ export default function Layout({ children }: { children: ReactNode }) {
             <Link to="/admin" className="footer-admin">Admin</Link>
           </div>
         </div>
+        <nav className="container footer-links" aria-label="Site sections">
+          <Link to="/">Camera rental Abu Dhabi</Link>
+          <Link to="/?filter=lens">Lens rental Reem Island</Link>
+          <Link to="/?filter=gimbal">Gimbal rental UAE</Link>
+          <Link to="/?filter=action">Action camera rental</Link>
+          <Link to="/agreement">Rental terms</Link>
+          <Link to="/about">About</Link>
+        </nav>
       </footer>
     </div>
   );
