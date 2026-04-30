@@ -35,19 +35,20 @@ export default function HomePage() {
     <>
       <section className="hero">
         <div className="hero-content">
-          <h1>Camera &amp; lens rental, made simple.</h1>
+          <h1>Camera kit for creators — APS-C, made simple.</h1>
           <p>
-            Sony mirrorless bodies, fast primes, an ultra-tele zoom, action cams and gimbals — all
-            available for rent in Abu Dhabi. Pickup from <strong>Reem Island</strong>.
+            Sony mirrorless bodies, fast primes, an ultra-tele zoom, action cams and gimbals — for rent
+            in Abu Dhabi, picked up from <strong>Reem Island</strong>.{' '}
+            <strong>Emirates ID accepted</strong> — no passport hold for standard items.
           </p>
           <div className="hero-actions">
             <a href="#catalog" className="btn btn-primary">Browse gear</a>
             <Link to="/agreement" className="btn btn-ghost">Read terms</Link>
           </div>
           <ul className="hero-bullets">
-            <li>3+ items → 10% off · 5+ items → 15% off</li>
-            <li>Day-2 at 75% · Day-3+ at 60% of daily rate</li>
-            <li>Refundable security deposit · Emirates ID at pickup</li>
+            <li>Multi-day discount from <strong>day 2</strong> (75%) — not just week 1</li>
+            <li>3+ items → 10% off · 5+ items → 15% off bundles</li>
+            <li>Refundable cash deposit · Reem Island pickup &amp; drop-off</li>
           </ul>
         </div>
       </section>

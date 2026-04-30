@@ -27,7 +27,25 @@ export default function AgreementContent() {
         <li>Bookings are not held without the advance.</li>
       </ul>
 
-      <h2>3. Pricing tiers</h2>
+      <h2>3. Security deposit options</h2>
+      <ul>
+        <li>
+          <strong>Standard items</strong> (cameras, kit lenses, accessories): refundable cash or
+          bank-transfer deposit per item, as listed in the catalog. Returned the same day after the
+          item is inspected and accepted.
+        </li>
+        <li>
+          <strong>Premium items</strong> (replacement value above AED 5,000 — e.g. the Sigma 60-600mm
+          lens): you may either pay the standard cash deposit, or alternatively leave your original
+          passport with us for the duration of the rental in lieu of the cash deposit. Your passport
+          is returned the moment the item is inspected and accepted on return.
+        </li>
+        <li>
+          Emirates ID is recorded at pickup for verification only and is never held by us.
+        </li>
+      </ul>
+
+      <h2>4. Pricing tiers</h2>
       <ul>
         <li>Day 1 is charged at the listed daily rate.</li>
         <li>Day 2 is charged at 75% of the daily rate.</li>
@@ -35,48 +53,48 @@ export default function AgreementContent() {
         <li>Rentals of 3 different items receive 10% off the rental subtotal; 5+ different items receive 15% off. Deposits are not discounted.</li>
       </ul>
 
-      <h2>4. Pickup &amp; drop-off</h2>
+      <h2>5. Pickup &amp; drop-off</h2>
       <ul>
         <li>All pickups and drop-offs take place at an agreed location in <strong>Reem Island, Abu Dhabi</strong> at the time confirmed in writing.</li>
         <li>Each item is inspected jointly at pickup. Photos and serial numbers are recorded and signed; these are the reference for any damage or loss claim on return.</li>
         <li>The same joint inspection is repeated on return.</li>
       </ul>
 
-      <h2>5. Late return</h2>
+      <h2>6. Late return</h2>
       <ul>
         <li>A 30-minute grace period applies. Beyond that:</li>
         <li>30 minutes to 3 hours late: AED 50 + AED 25 per started hour, deducted from the deposit.</li>
         <li>More than 3 hours late, or any delay that prevents fulfilment of a confirmed booking for the next customer: a full additional day rate is deducted from the deposit, plus AED 100 compensation that we pay to the affected next customer, plus AED 50 administration fee. These deductions are taken from your deposit; if the deposit is insufficient, the difference is invoiced and payable within 7 days.</li>
       </ul>
 
-      <h2>6. Damage</h2>
+      <h2>7. Damage</h2>
       <ul>
         <li>Cosmetic damage with no functional impact (light scratches, minor scuffs): AED 100–300, deducted from the deposit.</li>
         <li>Functional damage: full repair cost as quoted by an authorised service centre is deducted from the deposit; any balance is invoiced and payable within 7 days.</li>
         <li>Total loss or theft: replacement value at current UAE market price is charged. The deposit is retained against this and the balance is invoiced and payable within 7 days. The renter is required to file a police report at their own cost.</li>
       </ul>
 
-      <h2>7. Use of equipment</h2>
+      <h2>8. Use of equipment</h2>
       <ul>
         <li>Equipment is for personal or professional photographic use only. Do not sublet, lend, or transfer to a third party.</li>
         <li>Do not expose equipment to: heavy rain, immersion in water (except where rated, e.g. DJI Action 5 within its rated depth), fine dust storms without protection, or temperatures above 50 °C.</li>
         <li>Memory cards, batteries and accessories supplied with the rental are part of the rental and must be returned in working order.</li>
       </ul>
 
-      <h2>8. Cancellation</h2>
+      <h2>9. Cancellation</h2>
       <ul>
         <li>More than 48 hours before pickup: full refund of advance.</li>
         <li>Less than 48 hours before pickup: advance is forfeited.</li>
         <li>No-show without cancellation: advance is forfeited and the booking is closed.</li>
       </ul>
 
-      <h2>9. Privacy</h2>
+      <h2>10. Privacy</h2>
       <ul>
         <li>The website stores only the contact details you submit (name, phone, email, notes). No Emirates ID, scans or images of identity documents are uploaded online.</li>
         <li>We do not share your information with third parties except where required by law.</li>
       </ul>
 
-      <h2>10. Disputes</h2>
+      <h2>11. Disputes</h2>
       <ul>
         <li>Any dispute is resolved in good faith between the parties first. If unresolved, it is referred to the relevant Abu Dhabi courts.</li>
       </ul>
