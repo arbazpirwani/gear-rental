@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../lib/cartContext';
 import { useProducts } from '../lib/db/products';
 import { formatAed, quote } from '../lib/pricing';
+import { useDocumentMeta } from '../lib/seo';
 import ProductImage from '../components/ProductImage';
 
 export default function CartPage() {
   const { cart, setCart } = useCart();
   const { products } = useProducts();
+  useDocumentMeta({ title: 'Your booking · Gear Rental', noindex: true });
   const lookup = useMemo(
     () => (id: string) => products.find((p) => p.id === id),
     [products],

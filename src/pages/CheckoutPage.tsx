@@ -9,6 +9,7 @@ import { isFirebaseConfigured } from '../lib/firebase';
 import { createBooking } from '../lib/db/bookings';
 import Modal from '../components/Modal';
 import AgreementContent from '../components/AgreementContent';
+import { useDocumentMeta } from '../lib/seo';
 import type { CustomerInfo } from '../types';
 
 export default function CheckoutPage() {
@@ -25,6 +26,7 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [agreementOpen, setAgreementOpen] = useState(false);
+  useDocumentMeta({ title: 'Request your equipment · Gear Rental', noindex: true });
 
   const lookup = useMemo(
     () => (id: string) => products.find((p) => p.id === id),

@@ -6,7 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0f172a" />
     <title>Gear Rental — Cameras &amp; Lenses, Reem Island</title>
-    <meta name="description" content="Affordable Sony mirrorless cameras, lenses and gimbals for rent in Abu Dhabi. Pickup from Reem Island." />
+    <meta name="description" content="Sony APS-C cameras, lenses, action cams and gimbals for rent in Abu Dhabi. Pickup from Reem Island. Multi-day discount from day 2." />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gear Rental — Cameras & Lenses, Reem Island" />
+    <meta property="og:description" content="Sony APS-C cameras, lenses, action cams and gimbals for rent in Abu Dhabi. Pickup from Reem Island." />
+    <meta property="og:image" content="https://arbazpirwani.github.io/gear-rental/images/sony-zv-e10.jpg" />
+    <meta property="og:url" content="https://arbazpirwani.github.io/gear-rental/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script>
+      // Companion to public/404.html — restores the original deep-link path
+      // from the redirect query string before React Router boots, so a direct
+      // visit to /gear-rental/product/sigma-60-600 ends up at the right URL.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '', l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { useProducts } from '../lib/db/products';
+import { useDocumentMeta } from '../lib/seo';
 import { CATEGORY_ORDER, type Category } from '../types';
 
 const FILTERS: Array<{ key: 'all' | Category; label: string }> = [
@@ -18,6 +19,12 @@ const FILTERS: Array<{ key: 'all' | Category; label: string }> = [
 export default function HomePage() {
   const [filter, setFilter] = useState<'all' | Category>('all');
   const { products, source } = useProducts();
+
+  useDocumentMeta({
+    title: 'Camera & Lens Rental, Reem Island Abu Dhabi · Gear Rental',
+    description:
+      'Sony APS-C cameras, fast primes, ultra-tele zoom, action cams and gimbals for rent in Abu Dhabi. Pickup from Reem Island. Multi-day discount from day 2.',
+  });
 
   const visible = useMemo(() => {
     const list = filter === 'all' ? products : products.filter((p) => p.category === filter);

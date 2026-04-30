@@ -1,6 +1,11 @@
 import { OWNER_DISPLAY_PHONE, OWNER_NAME, OWNER_WHATSAPP } from '../lib/whatsapp';
+import { useDocumentMeta } from '../lib/seo';
 
 export default function AboutPage() {
+  useDocumentMeta({
+    title: 'About · Gear Rental, Reem Island',
+    description: `Owner-operated camera rental kit run by ${OWNER_NAME} from Reem Island, Abu Dhabi. Sony APS-C bodies, native E-mount lenses, action cams and gimbals.`,
+  });
   return (
     <article className="legal">
       <h1>About Gear Rental</h1>

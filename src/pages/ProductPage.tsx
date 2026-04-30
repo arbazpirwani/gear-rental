@@ -4,6 +4,7 @@ import { daysBetween, formatAed, rentalForDays } from '../lib/pricing';
 import { useCart } from '../lib/cartContext';
 import { useProduct } from '../lib/db/products';
 import { useBookedDates, isDateBlocked, rangesOverlap } from '../lib/db/availability';
+import { useDocumentMeta, SITE_URL } from '../lib/seo';
 import ProductImage from '../components/ProductImage';
 import AvailabilityNotice from '../components/AvailabilityNotice';
 
@@ -29,6 +30,42 @@ export default function ProductPage() {
   const [conflict, setConflict] = useState<string | null>(null);
 
   const { ranges, loading: loadingDates } = useBookedDates(id);
+
+  useDocumentMeta({
+    title: product
+      ? `${product.title} — AED ${product.pricePerDay}/day · Gear Rental`
+      : 'Product · Gear Rental',
+    description: product
+      ? `Rent the ${product.title} from AED ${product.pricePerDay}/day. ${product.shortDescription} Pickup from Reem Island, Abu Dhabi.`
+      : undefined,
+    image: product ? `${SITE_URL}${product.image}` : undefined,
+    jsonLd: product
+      ? {
+          '@context': 'https://schema.org/',
+          '@type': 'Product',
+          name: product.title,
+          description: product.description,
+          brand: { '@type': 'Brand', name: product.brand },
+          image: `${SITE_URL}${product.image}`,
+          offers: {
+            '@type': 'Offer',
+            priceCurrency: 'AED',
+            price: product.pricePerDay,
+            priceSpecification: {
+              '@type': 'UnitPriceSpecification',
+              priceCurrency: 'AED',
+              price: product.pricePerDay,
+              referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'DAY' },
+            },
+            availability: product.inStock
+              ? 'https://schema.org/InStock'
+              : 'https://schema.org/OutOfStock',
+            seller: { '@type': 'Organization', name: 'Gear Rental — Reem Island' },
+            areaServed: 'Abu Dhabi, UAE',
+          },
+        }
+      : undefined,
+  });
 
   useEffect(() => {
     if (!startDate || !endDate || ranges.length === 0) {

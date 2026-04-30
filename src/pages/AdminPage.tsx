@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/authContext';
 import { isFirebaseConfigured } from '../lib/firebase';
+import { useDocumentMeta } from '../lib/seo';
 import AdminBookings from '../components/admin/AdminBookings';
 import AdminProducts from '../components/admin/AdminProducts';
 import AdminSettings from '../components/admin/AdminSettings';
@@ -11,6 +12,7 @@ type Tab = 'bookings' | 'products' | 'settings';
 export default function AdminPage() {
   const { user, isAdmin, loading, signInWithGoogle, signOutNow } = useAuth();
   const [tab, setTab] = useState<Tab>('bookings');
+  useDocumentMeta({ title: 'Admin · Gear Rental', noindex: true });
 
   if (!isFirebaseConfigured) {
     return (

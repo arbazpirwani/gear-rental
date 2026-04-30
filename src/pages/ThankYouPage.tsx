@@ -1,9 +1,11 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { OWNER_DISPLAY_PHONE, OWNER_WHATSAPP } from '../lib/whatsapp';
+import { useDocumentMeta } from '../lib/seo';
 
 export default function ThankYouPage() {
   const [params] = useSearchParams();
   const id = params.get('id');
+  useDocumentMeta({ title: 'Booking received · Gear Rental', noindex: true });
   return (
     <div className="thankyou">
       <div className="thankyou-card">
