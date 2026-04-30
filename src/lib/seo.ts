@@ -5,6 +5,43 @@ import { useEffect } from 'react';
 export const SITE_URL = 'https://arbazpirwani.github.io/gear-rental';
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/sony-zv-e10.jpg`;
 
+// Reusable LocalBusiness schema. Embedded on the homepage; tells Google this
+// is an Abu Dhabi business so we can rank for "camera rental abu dhabi" etc.
+export const LOCAL_BUSINESS_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${SITE_URL}/#business`,
+  name: 'Gear Rental — Reem Island',
+  alternateName: 'Gear Rental Abu Dhabi',
+  description:
+    'Owner-operated camera and lens rental in Abu Dhabi. Sony APS-C bodies, native E-mount lenses, Sigma super-tele, action cams and gimbals. Pickup from Reem Island, Emirates ID accepted, multi-day discount from day 2.',
+  url: SITE_URL,
+  telephone: '+971559870068',
+  image: DEFAULT_OG_IMAGE,
+  priceRange: 'AED 15 – AED 250 per day',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Reem Island',
+    addressRegion: 'Abu Dhabi',
+    addressCountry: 'AE',
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Abu Dhabi' },
+    { '@type': 'AdministrativeArea', name: 'United Arab Emirates' },
+  ],
+  knowsAbout: [
+    'Camera rental',
+    'Lens rental',
+    'Gimbal rental',
+    'Action camera rental',
+    'Sony APS-C mirrorless',
+    'Sony E-mount lenses',
+    'Sigma 60-600mm rental',
+  ],
+  paymentAccepted: 'Cash, Bank transfer',
+  sameAs: ['https://wa.me/971559870068'],
+};
+
 export interface DocumentMeta {
   title: string;
   description?: string;

@@ -33,36 +33,53 @@ export default function ProductPage() {
 
   useDocumentMeta({
     title: product
-      ? `${product.title} — AED ${product.pricePerDay}/day · Gear Rental`
+      ? `Rent ${product.title} in Abu Dhabi — AED ${product.pricePerDay}/day · Gear Rental`
       : 'Product · Gear Rental',
     description: product
-      ? `Rent the ${product.title} from AED ${product.pricePerDay}/day. ${product.shortDescription} Pickup from Reem Island, Abu Dhabi.`
+      ? `Rent the ${product.title} in Abu Dhabi from AED ${product.pricePerDay}/day. ${product.shortDescription} Pickup from Reem Island. Emirates ID accepted, multi-day discount from day 2.`
       : undefined,
     image: product ? `${SITE_URL}${product.image}` : undefined,
     jsonLd: product
       ? {
-          '@context': 'https://schema.org/',
-          '@type': 'Product',
-          name: product.title,
-          description: product.description,
-          brand: { '@type': 'Brand', name: product.brand },
-          image: `${SITE_URL}${product.image}`,
-          offers: {
-            '@type': 'Offer',
-            priceCurrency: 'AED',
-            price: product.pricePerDay,
-            priceSpecification: {
-              '@type': 'UnitPriceSpecification',
-              priceCurrency: 'AED',
-              price: product.pricePerDay,
-              referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'DAY' },
+          '@graph': [
+            {
+              '@context': 'https://schema.org/',
+              '@type': 'Product',
+              name: product.title,
+              description: product.description,
+              brand: { '@type': 'Brand', name: product.brand },
+              image: `${SITE_URL}${product.image}`,
+              offers: {
+                '@type': 'Offer',
+                priceCurrency: 'AED',
+                price: product.pricePerDay,
+                priceSpecification: {
+                  '@type': 'UnitPriceSpecification',
+                  priceCurrency: 'AED',
+                  price: product.pricePerDay,
+                  referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'DAY' },
+                },
+                availability: product.inStock
+                  ? 'https://schema.org/InStock'
+                  : 'https://schema.org/OutOfStock',
+                seller: { '@type': 'Organization', name: 'Gear Rental — Reem Island' },
+                areaServed: 'Abu Dhabi, UAE',
+              },
             },
-            availability: product.inStock
-              ? 'https://schema.org/InStock'
-              : 'https://schema.org/OutOfStock',
-            seller: { '@type': 'Organization', name: 'Gear Rental — Reem Island' },
-            areaServed: 'Abu Dhabi, UAE',
-          },
+            {
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Camera Rental Abu Dhabi', item: SITE_URL },
+                {
+                  '@type': 'ListItem',
+                  position: 2,
+                  name: product.title,
+                  item: `${SITE_URL}/product/${product.id}`,
+                },
+              ],
+            },
+          ],
         }
       : undefined,
   });
