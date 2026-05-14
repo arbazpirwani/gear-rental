@@ -1,0 +1,13 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Issue-report uploads — public create with size/type limits so we can
+    // collect evidence photos. No public read (URLs are signed download
+    // tokens stored alongside the Firestore doc the admin reads).
+    match /issue-reports/{reportId}/{fileName} {
+      allow read: if false;
+      allow write: if request.resource.size < 25 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}

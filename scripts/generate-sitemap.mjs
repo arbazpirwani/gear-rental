@@ -47,6 +47,7 @@ Disallow: /admin
 Disallow: /cart
 Disallow: /checkout
 Disallow: /thank-you
+Disallow: /report
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `;

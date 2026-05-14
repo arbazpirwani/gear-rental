@@ -10,6 +10,7 @@ import AgreementPage from './pages/AgreementPage';
 import AboutPage from './pages/AboutPage';
 import ThankYouPage from './pages/ThankYouPage';
 import AdminPage from './pages/AdminPage';
+import ReportPage from './pages/ReportPage';
 import { CartContext } from './lib/cartContext';
 import { AuthProvider } from './lib/authContext';
 import { loadCart, saveCart } from './lib/storage';
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/agreement" element={<AgreementPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/report" element={<ReportPage />} />
           </Routes>
         </Layout>
       </CartContext.Provider>
