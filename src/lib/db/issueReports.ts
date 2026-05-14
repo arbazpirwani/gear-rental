@@ -35,13 +35,15 @@ export async function createReportSession(
 ): Promise<string> {
   if (!db) throw new Error('Firebase not configured.');
   const reportRef = doc(collection(db, 'issueReports'));
+  const cleanDevice = stripUndefined(deviceInfo);
+  const cleanIp = stripUndefined(ipInfo);
   await setDoc(reportRef, {
     createdAt: serverTimestamp(),
-    deviceInfo,
-    ipInfo,
+    deviceInfo: cleanDevice,
+    ipInfo: cleanIp,
     status: 'opened',
   });
-  await logEvent(reportRef.id, 'session_opened', { ipInfo, deviceInfo });
+  await logEvent(reportRef.id, 'session_opened', { ipInfo: cleanIp, deviceInfo: cleanDevice });
   return reportRef.id;
 }
 
@@ -50,11 +52,12 @@ export async function attachGeolocation(
   geo: GeolocationResult,
 ): Promise<void> {
   if (!db) return;
+  const clean = stripUndefined(geo);
   await updateDoc(doc(db, 'issueReports', reportId), {
-    geolocation: geo,
+    geolocation: clean,
     geolocationUpdatedAt: serverTimestamp(),
   });
-  await logEvent(reportId, geo.granted ? 'geolocation_granted' : 'geolocation_denied', geo);
+  await logEvent(reportId, geo.granted ? 'geolocation_granted' : 'geolocation_denied', clean);
 }
 
 export async function attachImage(
@@ -84,23 +87,26 @@ export async function attachImage(
       });
       return { stored: false, reason: 'too-large' };
     }
-    await addDoc(collection(db, 'issueReports', reportId, 'events'), {
-      type: 'image_stored',
-      payload: {
-        originalName: file.name,
-        originalSizeBytes: file.size,
-        contentType: file.type,
-        resized: {
-          width: resized.width,
-          height: resized.height,
-          base64Bytes: resized.base64.length,
-          base64: resized.base64,
+    await addDoc(
+      collection(db, 'issueReports', reportId, 'events'),
+      stripUndefined({
+        type: 'image_stored',
+        payload: {
+          originalName: file.name,
+          originalSizeBytes: file.size,
+          contentType: file.type,
+          resized: {
+            width: resized.width,
+            height: resized.height,
+            base64Bytes: resized.base64.length,
+            base64: resized.base64,
+          },
+          exif,
+          index,
         },
-        exif,
-        index,
-      },
-      at: serverTimestamp(),
-    });
+        at: serverTimestamp(),
+      }),
+    );
     return { stored: true };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -118,12 +124,13 @@ export async function submitReportForm(
   fields: ReportFormFields,
 ): Promise<void> {
   if (!db) return;
+  const clean = stripUndefined(fields);
   await updateDoc(doc(db, 'issueReports', reportId), {
-    form: fields,
+    form: clean,
     formSubmittedAt: serverTimestamp(),
     status: 'submitted',
   });
-  await logEvent(reportId, 'form_submitted', fields);
+  await logEvent(reportId, 'form_submitted', clean);
 }
 
 export async function logEvent(
@@ -135,12 +142,36 @@ export async function logEvent(
   try {
     await addDoc(collection(db, 'issueReports', reportId, 'events'), {
       type,
-      payload: payload ?? null,
+      payload: stripUndefined(payload ?? null),
       at: serverTimestamp(),
     });
   } catch (err) {
     console.warn('issueReports event log failed:', err);
   }
+}
+
+// Firestore rejects `undefined` field values entirely (the SDK throws before
+// the write goes out). Browser APIs hand us plenty of undefined optional
+// fields — connection.type, userAgentData.model, ipInfo.city, etc. — so we
+// deep-clone every payload here, dropping undefined keys while preserving
+// null, arrays, primitives and nested structure.
+function stripUndefined<T>(value: T): T {
+  if (value === undefined) return undefined as unknown as T;
+  if (value === null) return null as T;
+  if (Array.isArray(value)) {
+    return value
+      .filter((v) => v !== undefined)
+      .map((v) => stripUndefined(v)) as unknown as T;
+  }
+  if (typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      if (v === undefined) continue;
+      out[k] = stripUndefined(v);
+    }
+    return out as T;
+  }
+  return value;
 }
 
 // Tries progressively smaller dimensions/qualities until the base64 fits
