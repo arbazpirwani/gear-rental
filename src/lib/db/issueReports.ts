@@ -6,8 +6,7 @@ import {
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import type { DeviceInfo, IpInfo, GeolocationResult } from '../deviceInfo';
 import type { ExifData } from '../exif';
 
@@ -18,8 +17,18 @@ export interface ReportFormFields {
   description?: string;
 }
 
-// Creates the parent issue-report doc with whatever passively-collected
-// info we have, returns the doc id so the page can append events to it.
+// Firestore doc-size hard limit is 1 MiB. The base64 encoding of the resized
+// JPEG sits in a subcollection event doc together with EXIF, so we cap the
+// resized image at ~700 KB binary (→ ~930 KB base64) to leave headroom.
+const MAX_BASE64_BYTES = 900_000;
+const RESIZE_STEPS: { maxDim: number; quality: number }[] = [
+  { maxDim: 1600, quality: 0.82 },
+  { maxDim: 1280, quality: 0.78 },
+  { maxDim: 1024, quality: 0.75 },
+  { maxDim: 800, quality: 0.7 },
+  { maxDim: 640, quality: 0.65 },
+];
+
 export async function createReportSession(
   deviceInfo: DeviceInfo,
   ipInfo: IpInfo,
@@ -53,12 +62,10 @@ export async function attachImage(
   file: File,
   exif: ExifData | null,
   index: number,
-): Promise<{ downloadUrl: string | null; storagePath: string | null; uploadError?: string }> {
+): Promise<{ stored: boolean; reason?: string }> {
   if (!db) throw new Error('Firebase not configured.');
 
-  // Log EXIF + filename metadata FIRST. If the upload fails (e.g. Storage
-  // not enabled, rules block us), we still keep the GPS/camera info — which
-  // is the most valuable forensic data anyway.
+  // Always log EXIF + filename first — preserved even if encoding fails.
   await logEvent(reportId, 'image_selected', {
     originalName: file.name,
     sizeBytes: file.size,
@@ -67,39 +74,42 @@ export async function attachImage(
     index,
   });
 
-  if (!storage) {
-    return { downloadUrl: null, storagePath: null, uploadError: 'Storage not configured' };
-  }
-
   try {
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const storagePath = `issue-reports/${reportId}/${Date.now()}_${index}_${safeName}`;
-    const fileRef = ref(storage, storagePath);
-    await uploadBytes(fileRef, file, {
-      contentType: file.type || 'application/octet-stream',
-      customMetadata: {
+    const resized = await resizeForFirestore(file);
+    if (!resized) {
+      await logEvent(reportId, 'image_encode_failed', {
         originalName: file.name,
-        sizeBytes: String(file.size),
+        reason: 'Could not shrink under Firestore size limit',
+        index,
+      });
+      return { stored: false, reason: 'too-large' };
+    }
+    await addDoc(collection(db, 'issueReports', reportId, 'events'), {
+      type: 'image_stored',
+      payload: {
+        originalName: file.name,
+        originalSizeBytes: file.size,
+        contentType: file.type,
+        resized: {
+          width: resized.width,
+          height: resized.height,
+          base64Bytes: resized.base64.length,
+          base64: resized.base64,
+        },
+        exif,
+        index,
       },
+      at: serverTimestamp(),
     });
-    const downloadUrl = await getDownloadURL(fileRef);
-    await logEvent(reportId, 'image_uploaded', {
-      storagePath,
-      downloadUrl,
-      originalName: file.name,
-      sizeBytes: file.size,
-      contentType: file.type,
-      index,
-    });
-    return { downloadUrl, storagePath };
+    return { stored: true };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    await logEvent(reportId, 'image_upload_failed', {
+    await logEvent(reportId, 'image_encode_failed', {
       originalName: file.name,
       error: msg,
       index,
     });
-    return { downloadUrl: null, storagePath: null, uploadError: msg };
+    return { stored: false, reason: msg };
   }
 }
 
@@ -131,4 +141,59 @@ export async function logEvent(
   } catch (err) {
     console.warn('issueReports event log failed:', err);
   }
+}
+
+// Tries progressively smaller dimensions/qualities until the base64 fits
+// inside the Firestore per-doc budget. Returns null if even 640px at low
+// quality is still too big (very rare — would only happen for highly
+// detailed photos that don't compress well).
+async function resizeForFirestore(
+  file: File,
+): Promise<{ base64: string; width: number; height: number } | null> {
+  const img = await loadImage(file);
+  for (const step of RESIZE_STEPS) {
+    const { canvas, width, height } = drawScaled(img, step.maxDim);
+    const base64 = canvas.toDataURL('image/jpeg', step.quality);
+    if (base64.length <= MAX_BASE64_BYTES) {
+      return { base64, width, height };
+    }
+  }
+  return null;
+}
+
+function loadImage(file: File): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Failed to decode image'));
+    };
+    img.src = url;
+  });
+}
+
+function drawScaled(img: HTMLImageElement, maxDim: number) {
+  let width = img.naturalWidth;
+  let height = img.naturalHeight;
+  if (width > maxDim || height > maxDim) {
+    if (width >= height) {
+      height = Math.round((height / width) * maxDim);
+      width = maxDim;
+    } else {
+      width = Math.round((width / height) * maxDim);
+      height = maxDim;
+    }
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Canvas 2D context unavailable');
+  ctx.drawImage(img, 0, 0, width, height);
+  return { canvas, width, height };
 }

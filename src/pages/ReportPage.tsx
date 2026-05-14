@@ -18,7 +18,7 @@ import {
 interface UploadedImage {
   name: string;
   sizeBytes: number;
-  downloadUrl: string;
+  stored: boolean;
   hasGps: boolean;
 }
 
@@ -120,13 +120,13 @@ export default function ReportPage() {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const exif = await parseExif(file).catch(() => null);
-        const { downloadUrl } = await attachImage(reportId, file, exif, images.length + i);
+        const { stored } = await attachImage(reportId, file, exif, images.length + i);
         setImages((prev) => [
           ...prev,
           {
             name: file.name,
             sizeBytes: file.size,
-            downloadUrl: downloadUrl ?? '',
+            stored,
             hasGps: !!(exif?.gpsLatitude && exif?.gpsLongitude),
           },
         ]);
@@ -252,7 +252,7 @@ export default function ReportPage() {
           <ul className="muted small" style={{ marginTop: 8 }}>
             {images.map((img, idx) => (
               <li key={idx}>
-                ✓ {img.name} ({Math.round(img.sizeBytes / 1024)} KB)
+                {img.stored ? '✓' : '⚠'} {img.name} ({Math.round(img.sizeBytes / 1024)} KB)
                 {img.hasGps && ' — location data attached'}
               </li>
             ))}
