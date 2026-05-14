@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /thank-you
+Disallow: /report
+
+Sitemap: https://arbazpirwani.github.io/gear-rental/sitemap.xml

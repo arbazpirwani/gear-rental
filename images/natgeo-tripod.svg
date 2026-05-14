@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="NAT GEO NGPH001">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#3a4358"/>
+      <stop offset="100%" stop-color="#1f2737"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="360" fill="url(#bg)"/>
+  <text x="40" y="46" font-family="-apple-system,system-ui,sans-serif" font-size="11" letter-spacing="2" fill="#94a3b8" font-weight="700">NAT GEO · TRAVEL TRIPOD</text>
+  
+    <g transform="translate(120 60)">
+      <!-- head -->
+      <rect x="100" y="0" width="40" height="22" rx="3" fill="#1f2737"/>
+      <rect x="115" y="-8" width="10" height="10" fill="#0a0e18"/>
+      <circle cx="120" cy="22" r="10" fill="#0a0e18"/>
+      <!-- center column -->
+      <rect x="115" y="32" width="10" height="80" fill="url(#body)"/>
+      <!-- legs -->
+      <line x1="120" y1="112" x2="40" y2="240" stroke="#1f2737" stroke-width="6" stroke-linecap="round"/>
+      <line x1="120" y1="112" x2="120" y2="240" stroke="#0a0e18" stroke-width="6" stroke-linecap="round"/>
+      <line x1="120" y1="112" x2="200" y2="240" stroke="#1f2737" stroke-width="6" stroke-linecap="round"/>
+      <!-- leg locks -->
+      <circle cx="80" cy="180" r="3" fill="#f59e0b"/>
+      <circle cx="120" cy="180" r="3" fill="#f59e0b"/>
+      <circle cx="160" cy="180" r="3" fill="#f59e0b"/>
+      <!-- labels -->
+      <text x="-30" y="60" font-family="-apple-system,system-ui,sans-serif" font-size="11" font-weight="800" fill="#f59e0b" letter-spacing="2">NAT GEO</text>
+      <text x="-30" y="78" font-family="-apple-system,system-ui,sans-serif" font-size="9" fill="#94a3b8" letter-spacing="1">NGPH001</text>
+    </g>
+  <text x="240" y="328" text-anchor="middle" font-family="-apple-system,system-ui,sans-serif" font-size="13" fill="#cbd5e1" font-weight="600">NAT GEO NGPH001</text>
+</svg>
